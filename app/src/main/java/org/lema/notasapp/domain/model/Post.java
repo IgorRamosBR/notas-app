@@ -1,9 +1,6 @@
 package org.lema.notasapp.domain.model;
 
-import android.nfc.Tag;
-
-import java.net.URI;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,9 +10,9 @@ import java.util.List;
 public class Post {
 
     private String titulo;
-    private String mensagem;
-    private Calendar dataPostagem;
-    private URI imagemLink;
+    private String texto;
+    private Date dataPostagem;
+    private String linkParaFoto;
     private Autor autor;
     private List<Like> likes;
     private List<TagPost> tag;
@@ -28,28 +25,28 @@ public class Post {
         this.titulo = titulo;
     }
 
-    public String getMensagem() {
-        return mensagem;
+    public String getTexto() {
+        return texto;
     }
 
-    public void setMensagem(String mensagem) {
-        this.mensagem = mensagem;
+    public void setTexto(String texto) {
+        this.texto = texto;
     }
 
-    public Calendar getDataPostagem() {
+    public Date getDataPostagem() {
         return dataPostagem;
     }
 
-    public void setDataPostagem(Calendar dataPostagem) {
+    public void setDataPostagem(Date dataPostagem) {
         this.dataPostagem = dataPostagem;
     }
 
-    public URI getImagemLink() {
-        return imagemLink;
+    public String getLinkParaFoto() {
+        return linkParaFoto;
     }
 
-    public void setImagemLink(URI imagemLink) {
-        this.imagemLink = imagemLink;
+    public void setLinkParaFoto(String linkParaFoto) {
+        this.linkParaFoto = linkParaFoto;
     }
 
     public Autor getAutor() {

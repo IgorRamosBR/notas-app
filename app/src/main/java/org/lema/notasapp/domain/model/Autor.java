@@ -1,7 +1,5 @@
 package org.lema.notasapp.domain.model;
 
-import java.net.URI;
-
 /**
  * Created by igor on 08/03/17.
  */
@@ -9,7 +7,11 @@ public class Autor {
 
     private String nome;
     private String descricao;
-    private URI foto;
+    private String linkParaFoto;
+
+    public Autor(String nome) {
+        this.nome = nome;
+    }
 
     public String getNome() {
         return nome;
@@ -27,11 +29,11 @@ public class Autor {
         this.descricao = descricao;
     }
 
-    public URI getFoto() {
-        return foto;
+    public String getLinkParaFoto() {
+        return linkParaFoto;
     }
 
-    public void setFoto(URI foto) {
-        this.foto = foto;
+    public void setLinkParaFoto(String linkParaFoto) {
+        this.linkParaFoto = linkParaFoto;
     }
 }
