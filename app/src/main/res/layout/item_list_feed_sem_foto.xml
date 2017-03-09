@@ -1,0 +1,37 @@
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardDisciplina"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/cardview_feed_size"
+    android:layout_margin="5dp"
+    card_view:cardElevation="3dp"
+    card_view:cardBackgroundColor="@color/colorSecundary">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="Prof. Alessandro Karppel Jordão contemplado no edital PAq1/2016, mais de trinta professores selecionados."
+            android:textColor="@color/accent"
+            android:textAllCaps="true"
+            android:layout_width="318dp"
+            android:id="@+id/tv_feed_mensagem"
+            android:textSize="24sp"
+            android:layout_height="170dp" />
+
+        <TextView
+            android:text="- Maxmiller Alves"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_feed_autor"
+            android:textSize="16sp"
+            android:layout_marginRight="13dp"
+            android:layout_marginEnd="13dp"
+            android:layout_below="@+id/tv_feed_mensagem"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
