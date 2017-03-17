@@ -23,7 +23,7 @@ public class APIErrorResponseChain implements ResponseChain {
     public void handler(Call call, Response response) {
         ResponseBody responseBody = response.errorBody();
 
-        try {
+        try {   
             Converter<ResponseBody, APIError> converter = RetrofitUtils.getInstance().responseBodyConverter(APIError.class, new Annotation[0]);
             APIError error = converter.convert(responseBody);
             EventBus.getDefault().post(new APIErrorEvent(error));

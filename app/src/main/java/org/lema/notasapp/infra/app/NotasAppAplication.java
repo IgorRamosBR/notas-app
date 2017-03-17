@@ -2,9 +2,13 @@ package org.lema.notasapp.infra.app;
 
 import android.app.Application;
 
+import org.lema.notasapp.domain.model.Post;
 import org.lema.notasapp.infra.dagger.component.BoletimComponent;
 import org.lema.notasapp.infra.dagger.component.DaggerBoletimComponent;
+import org.lema.notasapp.infra.dagger.component.DaggerPostComponent;
+import org.lema.notasapp.infra.dagger.component.PostComponent;
 import org.lema.notasapp.infra.dagger.module.BoletimModule;
+import org.lema.notasapp.infra.dagger.module.PostModule;
 
 /**
  * Created by leonardocordeiro on 15/11/16.
@@ -12,7 +16,8 @@ import org.lema.notasapp.infra.dagger.module.BoletimModule;
 
 public class NotasAppAplication extends Application {
 
-    private BoletimComponent comp;
+    private BoletimComponent boletimComponent;
+    private PostComponent postComponent;
 
     // Multidex support
 //    @Override
@@ -25,11 +30,16 @@ public class NotasAppAplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        comp = DaggerBoletimComponent.builder()
+        boletimComponent = DaggerBoletimComponent.builder()
                                      .boletimModule(new BoletimModule(this)).build();
+
+        postComponent = DaggerPostComponent.builder()
+                                    .postModule(new PostModule((this))).build();
     }
 
-    public BoletimComponent getComponent() {
-        return comp;
+    public BoletimComponent getBoletimComponent() {
+        return boletimComponent;
     }
+
+    public PostComponent getPostComponent() {return postComponent;}
 }

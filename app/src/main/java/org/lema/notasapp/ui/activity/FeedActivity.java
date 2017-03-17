@@ -5,21 +5,38 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 
+import org.greenrobot.eventbus.Subscribe;
 import org.lema.notasapp.R;
 import org.lema.notasapp.adapter.FeedAdapter;
 import org.lema.notasapp.domain.model.Autor;
 import org.lema.notasapp.domain.model.Post;
+import org.lema.notasapp.domain.service.PostService;
+import org.lema.notasapp.infra.app.NotasAppAplication;
+import org.lema.notasapp.infra.dagger.component.PostComponent;
+import org.lema.notasapp.infra.event.APIErrorEvent;
+import org.lema.notasapp.infra.event.PostEvent;
+import org.lema.notasapp.infra.event.ThrowableEvent;
+import org.lema.notasapp.infra.listener.OnRetryListener;
+import org.lema.notasapp.infra.oauth2.model.AccessToken;
+import org.lema.notasapp.infra.retrofit.callback.FeedCallback;
+import org.lema.notasapp.ui.utils.DialogMessage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeedActivity extends AppCompatActivity {
+import javax.inject.Inject;
+
+public class FeedActivity extends OAuthActivity {
 
     private RecyclerView mRecyclerViewFeed;
     private Toolbar mToolbar;
     private List<Post> mPosts;
+
+    @Inject
+    PostService postService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +45,45 @@ public class FeedActivity extends AppCompatActivity {
 
         preencheReferencias();
 
-        preencheLista();
+
+        prepararInjecao();
 
         preparaToolbar();
 
+        buscaNoticias();
+    }
 
+    private void prepararInjecao() {
+        NotasAppAplication app = (NotasAppAplication) getApplication();
+        PostComponent component = app.getPostComponent();
+        component.inject(this);
+    }
+
+    @Subscribe
+    public void handle(APIErrorEvent event) {
+        Log.i("erro", event.error.toString());
+        dialogUtils.show(new DialogMessage(event.error.getMessage(), new OnRetryListener() {
+            @Override
+            public void onRetry() {
+                finish();
+            }
+        }));
+    }
+
+    @Subscribe
+    public void onReceiveAccessToken(AccessToken accessToken) {
+        buscaNoticias();
+    }
+
+    @Subscribe
+    public void handle(ThrowableEvent event) {
+        Log.i("erro", event.exception.toString());
+        dialogUtils.show(new DialogMessage(event.exception.getMessage(), new OnRetryListener() {
+            @Override
+            public void onRetry() {
+                buscaNoticias();
+            }
+        }));
     }
 
     @Override
@@ -42,12 +93,18 @@ public class FeedActivity extends AppCompatActivity {
         return true;
     }
 
+    private void buscaNoticias() {
+        Log.i("erro", "buscando posts");
+        postService.getPosts().enqueue(new FeedCallback());
+    }
+
     private void preencheReferencias() {
         mRecyclerViewFeed = (RecyclerView) findViewById(R.id.rv_feed);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_feed);
     }
 
-    public void preencheLista()    {
+    @Subscribe
+    public void preencheLista(PostEvent event)    {
 
         mPosts = new ArrayList<>();
 
@@ -65,6 +122,7 @@ public class FeedActivity extends AppCompatActivity {
         mPosts.add(p1);
         mPosts.add(p2);
 
+        mPosts = event.post;
 
         mRecyclerViewFeed.setAdapter(new FeedAdapter(this, mPosts));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

@@ -62,7 +62,7 @@ public class SugestaoNomeMateriaActivity extends OAuthActivity {
 
     private void inject() {
         NotasAppAplication app = (NotasAppAplication) getApplication();
-        BoletimComponent component = app.getComponent();
+        BoletimComponent component = app.getBoletimComponent();
         component.inject(this);
     }
 

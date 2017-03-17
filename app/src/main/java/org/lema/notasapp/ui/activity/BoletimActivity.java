@@ -67,7 +67,7 @@ public class BoletimActivity extends OAuthActivity {
 
     private void prepararInjecao() {
         NotasAppAplication app = (NotasAppAplication) getApplication();
-        BoletimComponent component = app.getComponent();
+        BoletimComponent component = app.getBoletimComponent();
         component.inject(this);
     }
 
